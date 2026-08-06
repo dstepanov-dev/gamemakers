@@ -11,7 +11,9 @@ import {
 
 type ModalContextValue = {
   isOpen: boolean;
-  open: () => void;
+  /** Service the visitor clicked through from, used to prefill the message. */
+  subject: string | null;
+  open: (subject?: string) => void;
   close: () => void;
 };
 
@@ -19,13 +21,17 @@ const ModalContext = createContext<ModalContextValue | null>(null);
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [subject, setSubject] = useState<string | null>(null);
 
-  const open = useCallback(() => setIsOpen(true), []);
+  const open = useCallback((nextSubject?: string) => {
+    setSubject(typeof nextSubject === "string" ? nextSubject : null);
+    setIsOpen(true);
+  }, []);
   const close = useCallback(() => setIsOpen(false), []);
 
   const value = useMemo<ModalContextValue>(
-    () => ({ isOpen, open, close }),
-    [isOpen, open, close]
+    () => ({ isOpen, subject, open, close }),
+    [isOpen, subject, open, close]
   );
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;

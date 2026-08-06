@@ -27,7 +27,7 @@ export function ContactCTA() {
               one business day. No obligations, just a conversation.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <button type="button" onClick={open} className="btn-primary">
+              <button type="button" onClick={() => open()} className="btn-primary">
                 Contact Us
               </button>
               <a

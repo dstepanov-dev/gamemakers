@@ -61,7 +61,7 @@ export function Hero() {
           </motion.p>
 
           <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
-            <button type="button" onClick={open} className="btn-primary">
+            <button type="button" onClick={() => open()} className="btn-primary">
               Contact Us
             </button>
             <a href="#portfolio" className="btn-ghost">
@@ -72,7 +72,7 @@ export function Hero() {
           {/* Stats */}
           <motion.dl
             variants={item}
-            className="mt-12 grid max-w-lg grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] sm:grid-cols-4"
+            className="mt-12 grid w-full grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] sm:grid-cols-4 lg:max-w-xl"
           >
             {STATS.map((s) => (
               <div key={s.label} className="bg-ink-800/40 px-4 py-4">
@@ -94,7 +94,10 @@ export function Hero() {
           transition={{ duration: 0.9, ease: [0.21, 0.47, 0.32, 0.98], delay: 0.2 }}
           className="relative lg:col-span-6"
         >
-          <div className="relative mx-auto max-w-xl">
+          {/* Full-bleed inside its column: no max-width cap, so the visual
+              always matches the width of the copy/stats beside or above it
+              instead of floating in empty space on wide tablets. */}
+          <div className="relative w-full">
             {/* Decorative bounding-box corners */}
             <span className="absolute -left-3 -top-3 h-8 w-8 rounded-tl-xl border-l-2 border-t-2 border-crimson/70" />
             <span className="absolute -bottom-3 -right-3 h-8 w-8 rounded-br-xl border-b-2 border-r-2 border-teal/70" />

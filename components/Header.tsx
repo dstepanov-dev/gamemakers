@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { NAV_LINKS } from "@/lib/data";
+import { LogoLink } from "./LogoLink";
 import { useModal } from "./ModalContext";
 
 export function Header() {
@@ -36,20 +36,11 @@ export function Header() {
               : "border border-transparent bg-transparent"
           }`}
         >
-          <a
-            href="#top"
+          <LogoLink
+            priority
             className="flex shrink-0 items-center"
-            aria-label="Game Makers Studio — home"
-          >
-            <Image
-              src="/images/logo.png"
-              alt="Game Makers Studio"
-              width={199}
-              height={40}
-              priority
-              className="h-8 w-auto sm:h-9"
-            />
-          </a>
+            imageClassName="h-8 w-auto sm:h-9"
+          />
 
           {/* Desktop nav */}
           <ul className="hidden items-center gap-8 lg:flex">
@@ -69,7 +60,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={open}
+              onClick={() => open()}
               className="btn-primary hidden px-6 py-2.5 text-xs sm:inline-flex"
             >
               Contact Us
@@ -119,19 +110,22 @@ export function Header() {
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setMenuOpen(false)}
             />
+            {/* `overflow-y-auto` keeps every item reachable when the viewport is
+                short — e.g. a tablet or phone in landscape. `overscroll-contain`
+                stops the scroll chaining through to the locked page behind it. */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 260, damping: 30 }}
-              className="glass-strong absolute right-0 top-0 flex h-full w-[78%] max-w-xs flex-col gap-2 p-6 pt-24"
+              className="glass-strong absolute right-0 top-0 flex h-full w-[78%] max-w-xs flex-col gap-2 overflow-y-auto overscroll-contain p-6 pb-10 pt-20 sm:pt-24"
             >
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-xl px-4 py-3 text-base font-medium text-mist transition-colors hover:bg-white/5 hover:text-white"
+                  className="shrink-0 rounded-xl px-4 py-3 text-base font-medium text-mist transition-colors hover:bg-white/5 hover:text-white"
                 >
                   {link.label}
                 </a>
@@ -142,7 +136,7 @@ export function Header() {
                   setMenuOpen(false);
                   open();
                 }}
-                className="btn-primary mt-4 w-full"
+                className="btn-primary mt-4 w-full shrink-0"
               >
                 Contact Us
               </button>

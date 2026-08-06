@@ -13,9 +13,19 @@ type FormState = {
 const EMPTY: FormState = { name: "", email: "", message: "" };
 
 export function ContactModal() {
-  const { isOpen, close } = useModal();
+  const { isOpen, subject, close } = useModal();
   const [form, setForm] = useState<FormState>(EMPTY);
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+
+  // Opened from a service card — start the visitor off with the right context.
+  useEffect(() => {
+    if (!isOpen || !subject) return;
+    setForm((prev) =>
+      prev.message
+        ? prev
+        : { ...prev, message: `I'd like to know more about ${subject}.` }
+    );
+  }, [isOpen, subject]);
 
   // Lock scroll + close on Escape while open.
   useEffect(() => {
@@ -113,6 +123,13 @@ export function ContactModal() {
                     Drop us a line about your project — we&apos;ll reply within one
                     business day.
                   </p>
+
+                  {subject && (
+                    <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-mist">
+                      <span className="h-1.5 w-1.5 rounded-full bg-crimson-soft" />
+                      {subject}
+                    </p>
+                  )}
 
                   <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

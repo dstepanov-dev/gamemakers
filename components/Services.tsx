@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import { SERVICES } from "@/lib/data";
+import { useModal } from "./ModalContext";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
 export function Services() {
+  const { open } = useModal();
+
   return (
     <section id="services" className="relative py-24 sm:py-28">
       <div className="grid-overlay" />
@@ -41,7 +44,14 @@ export function Services() {
                   <p className="mt-3 text-sm leading-relaxed text-mist-dim">
                     {service.description}
                   </p>
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-crimson-soft opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  {/* A real control, not decoration: opens the contact modal
+                      prefilled with this service. Kept permanently visible so it
+                      is usable on touch devices, where hover never fires. */}
+                  <button
+                    type="button"
+                    onClick={() => open(service.title)}
+                    className="mt-5 inline-flex items-center gap-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-crimson-soft/80 transition-colors duration-300 hover:text-crimson-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson/70 focus-visible:ring-offset-4 focus-visible:ring-offset-ink-800 group-hover:text-crimson-soft"
+                  >
                     Learn more
                     <svg
                       width="14"
@@ -52,10 +62,12 @@ export function Services() {
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      className="transition-transform duration-300 group-hover:translate-x-1"
                     >
                       <path d="M5 12h14M13 6l6 6-6 6" />
                     </svg>
-                  </span>
+                    <span className="sr-only">about {service.title}</span>
+                  </button>
                 </div>
               </article>
             </Reveal>

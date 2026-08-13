@@ -28,7 +28,10 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="container-px pt-3 sm:pt-4">
+      {/* `relative z-50` keeps the bar — logo and burger — painted above the
+          mobile drawer below, which is a positioned sibling inside this same
+          stacking context and would otherwise cover it. */}
+      <div className="container-px relative z-50 pt-3 sm:pt-4">
         <nav
           className={`flex items-center justify-between gap-4 rounded-2xl px-4 py-3 transition-all duration-500 sm:px-6 ${
             scrolled
@@ -40,6 +43,7 @@ export function Header() {
             priority
             className="flex shrink-0 items-center"
             imageClassName="h-8 w-auto sm:h-9"
+            onNavigate={() => setMenuOpen(false)}
           />
 
           {/* Desktop nav */}
